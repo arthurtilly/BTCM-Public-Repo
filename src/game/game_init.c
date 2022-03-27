@@ -30,6 +30,7 @@
 #include "puppycam2.h"
 #include "debug_box.h"
 #include "vc_check.h"
+#include "vc_ultra.h"
 #include "profiling.h"
 #include "puppycamold.h"
 #include "cursed_mirror_maker.h"
@@ -936,7 +937,9 @@ void init_controllers(void) {
 #ifdef EEP
     // strangely enough, the EEPROM probe for save data is done in this function.
     // save pak detection?
-    gEepromProbe = osEepromProbe(&gSIEventMesgQueue);
+    gEepromProbe = gIsVC
+                 ? osEepromProbeVC(&gSIEventMesgQueue)
+                 : osEepromProbe  (&gSIEventMesgQueue);
 #endif
 #ifdef SRAM
     gSramProbe = nuPiInitSram();

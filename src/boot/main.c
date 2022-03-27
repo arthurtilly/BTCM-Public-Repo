@@ -23,6 +23,8 @@
 #include "game/profiling.h"
 #include "game/mem_error_screen.h"
 
+#include "game/vc_check.h"
+
 // Message IDs
 enum MessageIDs {
     MESG_SP_COMPLETE = 100,
@@ -322,6 +324,7 @@ void thread3_main(UNUSED void *arg) {
     setup_mesg_queues();
     alloc_pool();
     load_engine_code_segment();
+    gIsVC = IS_VC();
 #ifndef UNF
     crash_screen_init();
 #endif
