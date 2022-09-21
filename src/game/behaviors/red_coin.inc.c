@@ -74,6 +74,10 @@ void bhv_red_coin_loop(void) {
                 gMarioState->numAir = 699;
             }
 
+#ifdef JP_RED_COIN_SOUND
+            // For JP version, play an identical sound for all coins.
+            create_sound_spawner(SOUND_GENERAL_RED_COIN);
+#else
             // On all versions but the JP version, each coin collected plays a higher noise.
 
             //play_sound(SOUND_MENU_COLLECT_RED_COIN
@@ -91,6 +95,7 @@ void bhv_red_coin_loop(void) {
                         gGlobalSoundSource);
             }
         }
+#endif
 
         if (o->prevObj != NULL) {
             o->prevObj->prevObj = NULL;
