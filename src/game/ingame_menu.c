@@ -3192,11 +3192,11 @@ void print_hud_course_complete_coins(s16 x, s16 y) {
 
             play_sound(SOUND_MENU_YOSHI_GAIN_LIVES, gGlobalSoundSource);
 
-#ifndef DISABLE_LIVES
-            // if (gCourseCompleteCoins && ((gCourseCompleteCoins % 50) == 0)) {
-            //     play_sound(SOUND_GENERAL_COLLECT_1UP, gGlobalSoundSource);
-            //     gMarioState->numLives++;
-            // }
+#ifdef ENABLE_LIVES
+            if (gCourseCompleteCoins && ((gCourseCompleteCoins % 50) == 0)) {
+                play_sound(SOUND_GENERAL_COLLECT_1UP, gGlobalSoundSource);
+                gMarioState->numLives++;
+            }
 #endif
         }
 

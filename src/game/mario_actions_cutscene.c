@@ -1291,8 +1291,9 @@ s32 act_death_exit(struct MarioState *m) {
 #if ENABLE_RUMBLE
         queue_rumble_data(5, 80);
 #endif
-        // m->numLives--;
-        m->gGlobalCoinGain -= 5;
+#ifdef ENABLE_LIVES
+        m->numLives--;
+#endif
         // restore 7.75 units of health
         m->healCounter = 99;
         m->numBadgePoints = m->numMaxFP;
@@ -1308,8 +1309,9 @@ s32 act_death_exit(struct MarioState *m) {
 s32 act_unused_death_exit(struct MarioState *m) {
     if (launch_mario_until_land(m, ACT_FREEFALL_LAND_STOP, MARIO_ANIM_GENERAL_FALL, 0.0f)) {
         play_sound(SOUND_MARIO_OOOF2, m->marioObj->header.gfx.cameraToObject);
-        // m->numLives--;
-        m->gGlobalCoinGain -= 5;
+#ifdef ENABLE_LIVES
+        m->numLives--;
+#endif
         // restore 7.75 units of health
         m->healCounter = 99;
         m->numBadgePoints = m->numMaxFP;
@@ -1328,8 +1330,9 @@ s32 act_falling_death_exit(struct MarioState *m) {
 #if ENABLE_RUMBLE
         queue_rumble_data(5, 80);
 #endif
-        // m->numLives--;
-        m->gGlobalCoinGain -= 5;
+#ifdef ENABLE_LIVES
+        m->numLives--;
+#endif
         // restore 7.75 units of health
         m->healCounter = 100;
         m->numBadgePoints = m->numMaxFP;
@@ -1384,10 +1387,10 @@ s32 act_special_death_exit(struct MarioState *m) {
 #if ENABLE_RUMBLE
         queue_rumble_data(5, 80);
 #endif
-        // m->numLives--;
-        m->gGlobalCoinGain -= 5;
-        m->healCounter = 99;
-        m->numBadgePoints = m->numMaxFP;
+#ifdef ENABLE_LIVES
+        m->numLives--;
+#endif
+        m->healCounter = 31;
     }
     // show Mario
     marioObj->header.gfx.node.flags |= GRAPH_RENDER_ACTIVE;

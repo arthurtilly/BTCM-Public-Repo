@@ -762,32 +762,32 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                 break;
 
             case WARP_OP_DEATH:
-                if (minigame_real) {
-                    //end_minigame();
-                } else {
-                    if (save_file_get_badge_equip() & (1<<BADGE_HARDCORE)) {
-                        //DELETE SAVE FILE!!!!
-                        save_file_erase(gCurrSaveFileNum-1);
-                        sDelayedWarpOp = WARP_OP_GAME_OVER;
-                    }
-                    sDelayedWarpTimer = 48;
-                    sSourceWarpNodeId = WARP_NODE_DEATH;
-                    // if (gCurrLevelNum != LEVEL_CASTLE) {
-                    //     gMarioState->InsideCourse = TRUE;
-                    // }
-                    play_transition(WARP_TRANSITION_FADE_INTO_BOWSER, 0x30, 0x00, 0x00, 0x00);
-                    play_sound(SOUND_MENU_BOWSER_LAUGH, gGlobalSoundSource);
-#ifdef PREVENT_DEATH_LOOP
-                    m->isDead = TRUE;
-#endif
+#ifdef ENABLE_LIVES
+                if (m->numLives == 0) {
+                    sDelayedWarpOp = WARP_OP_GAME_OVER;
                 }
+#endif
+                sDelayedWarpTimer = 48;
+                sSourceWarpNodeId = WARP_NODE_DEATH;
+                play_transition(WARP_TRANSITION_FADE_INTO_BOWSER, sDelayedWarpTimer, 0x00, 0x00, 0x00);
+                play_sound(SOUND_MENU_BOWSER_LAUGH, gGlobalSoundSource);
+#ifdef PREVENT_DEATH_LOOP
+                m->isDead = TRUE;
+#endif
                 break;
 
             case WARP_OP_WARP_FLOOR:
-                if (m->floor->type != SURFACE_DEATH_PLANE) {
-                    sDelayedWarpTimer = 20;
-                    //sSourceWarpNodeId = m->floor->force;
-                    play_transition(WARP_TRANSITION_FADE_INTO_COLOR, 0x14, 0x0, 0x0, 0x0);
+                sSourceWarpNodeId = WARP_NODE_WARP_FLOOR;
+                if (area_get_warp_node(sSourceWarpNodeId) == NULL) {
+#ifdef ENABLE_LIVES
+                    if (m->numLives == 0) {
+                        sDelayedWarpOp = WARP_OP_GAME_OVER;
+                    } else {
+                        sSourceWarpNodeId = WARP_NODE_DEATH;
+                    }
+#else
+                    sSourceWarpNodeId = WARP_NODE_DEATH;
+#endif
                 }
                 else{
                     //what the fuck is this bruhhhh
@@ -966,8 +966,19 @@ void update_hud_values(void) {
                 play_sound(coinSound, gMarioState->marioObj->header.gfx.cameraToObject);
             }
         }
-        if (gMarioState->numLives > 100) {
-            gMarioState->numLives = 100;
+
+#ifdef ENABLE_LIVES
+        if (gMarioState->numLives > MAX_NUM_LIVES) {
+            gMarioState->numLives = MAX_NUM_LIVES;
+        }
+#endif
+
+        if (gMarioState->numCoins > MAX_NUM_COINS) {
+            gMarioState->numCoins = MAX_NUM_COINS;
+        }
+
+        if (gHudDisplay.coins > MAX_NUM_COINS) {
+            gHudDisplay.coins = MAX_NUM_COINS;
         }
 
         gHudDisplay.stars = gMarioState->numStars;
