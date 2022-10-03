@@ -265,6 +265,8 @@ void load_area(s32 index) {
         //     deallocate_rigid_body(&gRigidBodies[i]);
         // }
 
+        gMarioCurrentRoom = 0;
+
         if (gCurrentArea->terrainData != NULL) {
             load_area_terrain(index, gCurrentArea->terrainData, gCurrentArea->surfaceRooms,
                               gCurrentArea->macroObjects);
