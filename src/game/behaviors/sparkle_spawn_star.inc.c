@@ -25,33 +25,17 @@ void prevent_ceiling_clipping(void) {
 }
 
 void bhv_spawned_star_init(void) {
-    s8 starId = GET_BPARAM1(o->oBehParams);
-    // u8 aglevel = ((gCurrCourseNum>=COURSE_TTM)&&(gCurrCourseNum<=COURSE_RR));
-    // u8 sfair_level = (gCurrCourseNum == COURSE_WDW)||(gCurrCourseNum == COURSE_NONE);
-    u8 currentLevelStarFlags = save_file_get_star_flags((gCurrSaveFileNum - 1), COURSE_NUM_TO_INDEX(gCurrCourseNum));
-
     if (!(o->oInteractionSubtype & INT_SUBTYPE_NO_EXIT)) {
         o->oBehParams = o->parentObj->oBehParams;
     }
-
-    // if (((o->oBehParams >> 24 == 6)||(aglevel))&&(!sfair_level)) {
-    //     //cosmic seed
-    //     if (currentLevelStarFlags & (1 << starId)) {
-    //         o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_TRANSPARENT_STAR];
-    //         o->oAnimState = 1;
-    //     } else {
-    //         o->header.gfx.sharedChild = gLoadedGraphNodes[0xED];
-    //     }
-    // } else {
-        //normal star
-        if (currentLevelStarFlags & (1 << starId)) {
-            if (currentLevelStarFlags & (1 << starId)) {
-                o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_TRANSPARENT_STAR];
-            } else {
-                o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_STAR];
-            }
-        }
-    // }
+    u8 param = GET_BPARAM1(o->oBehParams);
+#ifdef GLOBAL_STAR_IDS
+    if ((1 << (param % 7)) & save_file_get_star_flags((gCurrSaveFileNum - 1), COURSE_NUM_TO_INDEX(param / 7))) {
+#else
+    if ((1 << param) & save_file_get_star_flags((gCurrSaveFileNum - 1), COURSE_NUM_TO_INDEX(gCurrCourseNum))) {
+#endif
+        cur_obj_set_model(MODEL_TRANSPARENT_STAR);
+    }
 
     cur_obj_play_sound_2(SOUND_GENERAL2_STAR_APPEARS);
 }
