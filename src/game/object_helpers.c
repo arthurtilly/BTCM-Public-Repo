@@ -1957,25 +1957,38 @@ s32 is_item_in_array(s8 item, s8 *array) {
     return FALSE;
 }
 
-void cur_obj_enable_rendering_if_mario_in_room(void) {
-    if (o->oRoom != -1 && gMarioCurrentRoom != 0) {
-        register s32 marioInRoom = (
-            gMarioCurrentRoom == o->oRoom
-            || gDoorAdjacentRooms[gMarioCurrentRoom][0] == o->oRoom
-            || gDoorAdjacentRooms[gMarioCurrentRoom][1] == o->oRoom
-        );
+// void bhv_init_room(void) {
+//     struct Surface *floor = NULL;
+//     if (is_item_in_array(gCurrLevelNum, sLevelsWithRooms)) {
+//         find_room_floor(o->oPosX, o->oPosY, o->oPosZ, &floor);
 
-        if (marioInRoom) {
-            cur_obj_enable_rendering();
-            o->activeFlags &= ~ACTIVE_FLAG_IN_DIFFERENT_ROOM;
-            gNumRoomedObjectsInMarioRoom++;
-        } else {
-            cur_obj_disable_rendering();
-            o->activeFlags |= ACTIVE_FLAG_IN_DIFFERENT_ROOM;
-            gNumRoomedObjectsNotInMarioRoom++;
-        }
-    }
-}
+//         if (floor != NULL) {
+//             o->oRoom = floor->room;
+//             return;
+//         }
+//     }
+//     o->oRoom = -1;
+// }
+
+// u32 is_room_loaded(void) {
+//     return gMarioCurrentRoom == o->oRoom
+//             || gDoorAdjacentRooms[gMarioCurrentRoom][0] == o->oRoom
+//             || gDoorAdjacentRooms[gMarioCurrentRoom][1] == o->oRoom;
+// }
+
+// void cur_obj_enable_rendering_if_mario_in_room(void) {
+//     if (o->oRoom != -1 && gMarioCurrentRoom != 0) {
+//         if (is_room_loaded()) {
+//             cur_obj_enable_rendering();
+//             o->activeFlags &= ~ACTIVE_FLAG_IN_DIFFERENT_ROOM;
+//             gNumRoomedObjectsInMarioRoom++;
+//         } else {
+//             cur_obj_disable_rendering();
+//             o->activeFlags |= ACTIVE_FLAG_IN_DIFFERENT_ROOM;
+//             gNumRoomedObjectsNotInMarioRoom++;
+//         }
+//     }
+// }
 
 s32 cur_obj_set_hitbox_and_die_if_attacked(struct ObjectHitbox *hitbox, s32 deathSound, s32 noLootCoins) {
     s32 interacted = FALSE;

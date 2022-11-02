@@ -828,6 +828,15 @@ void cur_obj_update(void) {
     //    node->animFrame = geo_update_animation_frame(node, &node->animFrameAccelAssist);
     //}
 
+    // if (!(objFlags & OBJ_FLAG_PROCESS_OUTSIDE_ROOM)) {
+    //     if (o->oRoom != -1 && gMarioCurrentRoom != 0 && !is_room_loaded()) {
+    //         cur_obj_disable_rendering();
+    //         o->activeFlags |= ACTIVE_FLAG_IN_DIFFERENT_ROOM;
+    //         gNumRoomedObjectsNotInMarioRoom++;
+    //         return;
+    //     }
+    // }
+
     // Calculate the distance from the object to Mario.
     if (objFlags & OBJ_FLAG_COMPUTE_DIST_TO_MARIO) {
         o->oDistanceToMario = dist_between_objects(o, gMarioObject);
@@ -925,10 +934,11 @@ void cur_obj_update(void) {
 #endif
 
     // Handle visibility of object
-    if (o->oRoom != -1) {
-        // If the object is in a room, only show it when Mario is in the room.
-        cur_obj_enable_rendering_if_mario_in_room();
-    } else if (
+    // if (o->oRoom != -1) {
+    //     // If the object is in a room, only show it when Mario is in the room.
+    //     cur_obj_enable_rendering_if_mario_in_room();
+    // }
+    if (
         o->collisionData == NULL
         &&  (objFlags & OBJ_FLAG_COMPUTE_DIST_TO_MARIO)
         && !(objFlags & OBJ_FLAG_ACTIVE_FROM_AFAR)
@@ -945,10 +955,10 @@ void cur_obj_update(void) {
         }
     }
 
-    if ( revent_active ) {
-        if (objFlags & OBJ_FLAG_EVENT_VISIBLE) {
-            gCurrentObject->header.gfx.node.flags |= GRAPH_RENDER_ACTIVE;
-            gCurrentObject->activeFlags &= ~ACTIVE_FLAG_FAR_AWAY;
-        }
-    }
+    // if ( revent_active ) {
+    //     if (objFlags & OBJ_FLAG_EVENT_VISIBLE) {
+    //         gCurrentObject->header.gfx.node.flags |= GRAPH_RENDER_ACTIVE;
+    //         gCurrentObject->activeFlags &= ~ACTIVE_FLAG_FAR_AWAY;
+    //     }
+    // }
 }
