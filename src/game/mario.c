@@ -462,6 +462,7 @@ s32 mario_get_floor_class(struct MarioState *m) {
                 floorClass = SURFACE_CLASS_SLIPPERY;
                 break;
 
+            case SURFACE_SUPER_SLIPPERY:
             case SURFACE_VERY_SLIPPERY:
             case SURFACE_ICE:
             case SURFACE_HARD_VERY_SLIPPERY:
@@ -531,6 +532,7 @@ u32 get_terrain_sound_addend(TerrainData floorType) {
                 floorSoundType = 2;
                 break;
 
+            case SURFACE_SUPER_SLIPPERY:
             case SURFACE_VERY_SLIPPERY:
             case SURFACE_ICE:
             case SURFACE_HARD_VERY_SLIPPERY:
@@ -600,6 +602,10 @@ u32 mario_get_terrain_sound_addend(struct MarioState *m) {
  * Determines if Mario is facing "downhill."
  */
 s32 mario_facing_downhill(struct MarioState *m, s32 turnYaw) {
+    // Forces Mario to do a belly slide rather than a butt slide when on a super slippery floor, no matter his angle, so that the player can't jump.
+    if (m->floor && m->floor->type == SURFACE_SUPER_SLIPPERY)
+        return FALSE;
+
     s16 faceAngleYaw = m->faceAngle[1];
 
     // This is never used in practice, as turnYaw is
@@ -619,7 +625,7 @@ s32 mario_facing_downhill(struct MarioState *m, s32 turnYaw) {
 u32 mario_floor_is_slippery(struct MarioState *m) {
     f32 normY;
 
-    if ((m->area->terrainType & TERRAIN_MASK) == TERRAIN_SLIDE  && m->floorNormal[1] < COS1) {
+    if (((m->area->terrainType & TERRAIN_MASK) == TERRAIN_SLIDE  && m->floorNormal[1] < COS1) || (m->floor->type == SURFACE_SUPER_SLIPPERY)) {
         return TRUE;
     }
 
@@ -639,8 +645,8 @@ u32 mario_floor_is_slippery(struct MarioState *m) {
 s32 mario_floor_is_slope(struct MarioState *m) {
     f32 normY;
 
-    if ((m->area->terrainType & TERRAIN_MASK) == TERRAIN_SLIDE
-        && m->floorNormal[1] < COS1) {
+    if (((m->area->terrainType & TERRAIN_MASK) == TERRAIN_SLIDE
+        && m->floorNormal[1] < COS1) || (m->floor->type == SURFACE_SUPER_SLIPPERY)) {
         return TRUE;
     }
 
@@ -659,6 +665,8 @@ s32 mario_floor_is_slope(struct MarioState *m) {
  */
 s32 mario_floor_is_steep(struct MarioState *m) {
     f32 normY;
+    if (m->floor->type == SURFACE_SUPER_SLIPPERY)
+        return TRUE;
 
 #ifdef JUMP_KICK_FIX
     if (mario_get_floor_class(m) == SURFACE_CLASS_NOT_SLIPPERY) {
