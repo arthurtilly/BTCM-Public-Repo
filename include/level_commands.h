@@ -85,7 +85,7 @@ enum LevelActs {
     ACT_4 = (1 << 3),
     ACT_5 = (1 << 4),
     ACT_6 = (1 << 5),
-    ALL_ACTS = (ACT_1 | ACT_2 | ACT_3 | ACT_4 | ACT_5 | ACT_6)
+    ALL_ACTS = (ACT_1 | ACT_2 | ACT_3 | ACT_4 | ACT_5 | ACT_6),
 };
 
 enum LevelCommandEvalOperation {
@@ -116,13 +116,6 @@ enum LevelCommandVar {
 enum WarpCheckpointFlags {
     WARP_NO_CHECKPOINT = (0 << 0), // 0x00
     WARP_CHECKPOINT    = (1 << 7), // 0x80
-};
-
-enum LevelCommandCreateWhirlpoolCondition {
-    WHIRLPOOL_COND_ALWAYS,
-    WHIRLPOOL_COND_BOWSER2_NOT_BEATEN,
-    WHIRLPOOL_COND_BOWSER2_BEATEN,
-    WHIRLPOOL_COND_AT_LEAST_SECOND_STAR
 };
 
 #ifdef NO_SEGMENTED_MEMORY
@@ -359,7 +352,7 @@ enum LevelCommandCreateWhirlpoolCondition {
     CMD_W(model)
 
 #define OBJECT(model, posX, posY, posZ, angleX, angleY, angleZ, behParam, beh) \
-    OBJECT_WITH_ACTS(model, posX, posY, posZ, angleX, angleY, angleZ, behParam, beh, 0x1F)
+    OBJECT_WITH_ACTS(model, posX, posY, posZ, angleX, angleY, angleZ, behParam, beh, ALL_ACTS)
 
 #define MARIO(model, behArg, beh) \
     CMD_BBH(LEVEL_CMD_INIT_MARIO, 0x0C, model), \
@@ -445,8 +438,8 @@ enum LevelCommandCreateWhirlpoolCondition {
     CMD_HH(unk6, unk8), \
     CMD_HH(unk10, 0x0000)
 
-#define WHIRLPOOL(index, condition, posX, posY, posZ, strength) \
-    CMD_BBBB(LEVEL_CMD_CREATE_WHIRLPOOL, 0x0C, index, condition), \
+#define WHIRLPOOL(index, acts, posX, posY, posZ, strength) \
+    CMD_BBBB(LEVEL_CMD_CREATE_WHIRLPOOL, 0x0C, index, acts), \
     CMD_HH(posX, posY), \
     CMD_HH(posZ, strength)
 
