@@ -12,7 +12,6 @@
 #include "debug.h"
 #include "rumble_init.h"
 #include "cursed_mirror_maker.h"
-#include "buffers/buffers.h"
 
 #include "sm64.h"
 
