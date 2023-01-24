@@ -12,6 +12,7 @@
 #include "debug.h"
 #include "rumble_init.h"
 #include "cursed_mirror_maker.h"
+#include "buffers/buffers.h"
 
 #include "sm64.h"
 
@@ -81,7 +82,7 @@ extern far char *find_function_in_stack(u32 *sp);
 
 struct {
     OSThread thread;
-    u64 stack[0x800 / sizeof(u64)];
+    u64 stack[THREAD2_STACK / sizeof(u64)];
     OSMesgQueue mesgQueue;
     OSMesg mesg;
     u16 *framebuffer;

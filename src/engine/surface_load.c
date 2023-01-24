@@ -114,8 +114,6 @@ static void clear_static_surfaces(void) {
  */
 static void add_surface_to_cell(s32 dynamic, s32 cellX, s32 cellZ, struct Surface *surface) {
     struct SurfaceNode *list;
-    //s32 priority;
-    s32 sortDir = 1; // highest to lowest, then insertion order (water and floors)
     s32 listIndex;
 
     Vec3f normal;
@@ -125,13 +123,9 @@ static void add_surface_to_cell(s32 dynamic, s32 cellX, s32 cellZ, struct Surfac
         listIndex = SPATIAL_PARTITION_FLOORS;
     } else if (normal[1] < NORMAL_CEIL_THRESHOLD) {
         listIndex = SPATIAL_PARTITION_CEILS;
-        sortDir = -1; // lowest to highest, then insertion order
     } else {
         listIndex = SPATIAL_PARTITION_WALLS;
-        sortDir = 0; // insertion order
     }
-
-    //s32 surfacePriority = surface->upperY * sortDir;
 
     struct SurfaceNode *newNode = alloc_surface_node(dynamic);
     newNode->surface = surface;
