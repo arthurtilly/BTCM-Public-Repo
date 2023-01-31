@@ -22,8 +22,6 @@
 #include "game/rovent.h"
 #include "cursed_mirror_maker.h"
 
-#define ALIGN4(val) (((val) + 0x3) & ~0x3)
-
 #define MENU_DATA_MAGIC 0x4849
 #define SAVE_FILE_MAGIC 0x4441
 

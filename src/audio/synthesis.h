@@ -19,8 +19,6 @@
 
 extern u8 global_audio_hit;
 
-#define ALIGN16(val) (((val) + 0xF) & ~0xF)
-
 #ifdef BETTER_REVERB
 
 #define NUM_ALLPASS 12 // Maximum number of delay filters to use with better reverb; do not change this value if you don't know what you're doing.
