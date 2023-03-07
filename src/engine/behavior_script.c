@@ -823,16 +823,11 @@ void cur_obj_update(void) {
     s32 bhvProcResult;
     // s32 hasAnimation = (gCurrentObject->header.gfx.node.flags & GRAPH_RENDER_HAS_ANIMATION) != 0;
 
-    //if (hasAnimation && gCurrentObject->header.gfx.unk38.curAnim != NULL) {
-    //    struct GraphNodeObject_sub *node = &gCurrentObject->header.gfx.unk38;
-    //    node->animFrame = geo_update_animation_frame(node, &node->animFrameAccelAssist);
-    //}
+    // s32 inRoom = is_mario_in_room();
 
     // if (!(objFlags & OBJ_FLAG_PROCESS_OUTSIDE_ROOM)) {
-    //     if (o->oRoom != -1 && gMarioCurrentRoom != 0 && !is_room_loaded()) {
-    //         cur_obj_disable_rendering();
-    //         o->activeFlags |= ACTIVE_FLAG_IN_DIFFERENT_ROOM;
-    //         gNumRoomedObjectsNotInMarioRoom++;
+    //     if (inRoom == MARIO_OUTSIDE_ROOM) {
+    //         cur_obj_enable_disable_room_rendering(MARIO_OUTSIDE_ROOM);
     //         return;
     //     }
     // }
@@ -936,7 +931,16 @@ void cur_obj_update(void) {
     // Handle visibility of object
     // if (o->oRoom != -1) {
     //     // If the object is in a room, only show it when Mario is in the room.
-    //     cur_obj_enable_rendering_if_mario_in_room();
+    //     if (
+    //         (objFlags & OBJ_FLAG_ACTIVE_FROM_AFAR)
+    //         || distanceFromMario < o->oDrawingDistance
+    //     ) {
+    //         cur_obj_enable_disable_room_rendering(inRoom);
+    //         o->activeFlags &= ~ACTIVE_FLAG_FAR_AWAY;
+    //     } else {
+    //         o->header.gfx.node.flags &= ~GRAPH_RENDER_ACTIVE;
+    //         o->activeFlags |= ACTIVE_FLAG_FAR_AWAY;
+    //     }
     // }
     if (
         o->collisionData == NULL
