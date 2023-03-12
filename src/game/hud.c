@@ -1092,8 +1092,5 @@ void render_hud(void) {
             render_debug_mode();
         }
 #endif
-#ifdef PUPPYPRINT
-        print_set_envcolour(255, 255, 255, 255);
-#endif
     }
 }

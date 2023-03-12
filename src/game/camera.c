@@ -29,6 +29,7 @@
 #include "puppyprint.h"
 #include "rovent.h"
 #include "cursed_mirror_maker.h"
+#include "profiling.h"
 
 #define CBUTTON_MASK (U_CBUTTONS | D_CBUTTONS | L_CBUTTONS | R_CBUTTONS)
 
@@ -3005,63 +3006,12 @@ void update_lakitu(struct Camera *c) {
     }
 }
 
-
-void cutscene_2D(struct Camera *c) {
-    c->pos[0] = _2D_Camera_X+_2D_Camera_Offset_X;
-    c->focus[0] = _2D_Camera_X+_2D_Camera_Offset_X;
-    _2D_Camera_Offset_X = approach_f32_asymptotic(_2D_Camera_Offset_X, _2D_Camera_Offset_Target_X, 0.1f);
-    c->pos[1] = _2D_Camera_Y;
-    c->focus[1] = _2D_Camera_Y;
-    _2D_Camera_Y = approach_f32_asymptotic(_2D_Camera_Y, _2D_Camera_Y_Target, 0.2f);
-
-    //ingenious camera logic
-    if (gMarioState->pos[0] > _2D_Camera_X+100.0f){
-        _2D_Camera_X = gMarioState->pos[0]-100.0f;
-        _2D_Camera_Offset_Target_X = 150.0f;
-    }
-    if (gMarioState->pos[0] < _2D_Camera_X-100.0f){
-        _2D_Camera_X = gMarioState->pos[0]+100.0f;
-        _2D_Camera_Offset_Target_X = -150.0f;
-    }
-
-    if (TrackMario) {
-        _2D_Camera_Y_Target = gMarioState->pos[1];
-    }
-    if (gMarioState->pos[1] > gMarioState->floorHeight+500.0f) {
-        TrackMario = TRUE;
-    }
-    if (gMarioState->floorHeight == gMarioState->pos[1]) {
-        _2D_Camera_Y_Target = gMarioState->pos[1]+100.0f;
-        TrackMario = FALSE;
-    }
-    
-    c->pos[2] = gMarioState->pos[2]+500.0f;
-    c->focus[2] = gMarioState->pos[2];
-
-    if (gPlayer1Controller->buttonPressed & R_TRIG) {
-        gMarioState->_2D_Setting = (gMarioState->_2D_Setting+1)%3;
-        play_sound_rbutton_changed();
-    }
-
-    if (c->pos[1] - (gMarioState->_2D_FOV_PUBLIC*1200.0f) < -550.0f) {
-        c->pos[1] = -550.0f + (gMarioState->_2D_FOV_PUBLIC*1200.0f);
-        c->focus[1] = c->pos[1];
-    }
-    // if ((gCurrentArea->index == 4)&&(gCurrLevelNum != LEVEL_RR)) {
-    //     c->pos[0] = 0.0f;
-    //     c->focus[0] = c->pos[0];
-    // }
-
-    if ((gMarioState->action & ACT_GROUP_MASK) == ACT_GROUP_CUTSCENE) {
-        //c->cutscene = 0;
-    }
-}
-
 /**
  * The main camera update function.
  * Gets controller input, checks for cutscenes, handles mode changes, and moves the camera
  */
 void update_camera(struct Camera *c) {
+    PROFILER_GET_SNAPSHOT_TYPE(PROFILER_DELTA_COLLISION);
     gCamera = c;
     update_camera_hud_status(c);
     if (c->cutscene == CUTSCENE_NONE
@@ -3309,6 +3259,7 @@ void update_camera(struct Camera *c) {
     }
 #endif
     gLakituState.lastFrameAction = sMarioCamState->action;
+    profiler_update(PROFILER_TIME_CAMERA, profiler_get_delta(PROFILER_DELTA_COLLISION) - first);
 }
 
 /**

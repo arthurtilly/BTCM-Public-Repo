@@ -407,30 +407,14 @@ void play_transition_after_delay(s16 transType, s16 time, u8 red, u8 green, u8 b
 }
 
 void render_game(void) {
-#ifdef MUSIC_PREVIEWING
-    u32 currBGM = get_current_background_music() & 0x7F;
-    if (gPlayer1Controller->buttonPressed & U_JPAD) {
-        if (currBGM != MUSIC_PREVIEWING) {
-            lastBGM = currBGM;
-        }
-        set_background_music(0, MUSIC_PREVIEWING, 0);
-    } else if (gPlayer1Controller->buttonPressed & D_JPAD) {
-        set_background_music(0, lastBGM, 0);
-    } else if (gPlayer1Controller->buttonPressed & L_JPAD) {
-        currBGM = (currBGM - 1 + SEQ_COUNT) % SEQ_COUNT;
-        set_background_music(0, currBGM, 0);
-        lastBGM = currBGM;
-    } else if (gPlayer1Controller->buttonPressed & R_JPAD) {
-        currBGM = (currBGM + 1) % SEQ_COUNT;
-        set_background_music(0, currBGM, 0);
-        lastBGM = currBGM;
-    }
-#endif
-
+    PROFILER_GET_SNAPSHOT_TYPE(PROFILER_DELTA_COLLISION);
     if (gCurrentArea != NULL && !gWarpTransition.pauseRendering) {
         if (gCurrentArea->graphNode) {
             geo_process_root(gCurrentArea->graphNode, gViewportOverride, gViewportClip, gFBSetColor);
         }
+#ifdef PUPPYPRINT
+        bzero(gCurrEnvCol, sizeof(ColorRGBA));
+#endif
 
         gSPViewport(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gViewport));
 
@@ -441,6 +425,10 @@ void render_game(void) {
 
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+#ifdef PUPPYPRINT
+        puppyprint_print_deferred();
+#endif
 
         do_cutscene_handler();
         // print_displaying_credits_entry();
@@ -487,6 +475,9 @@ void render_game(void) {
         }
     } else {
         render_text_labels();
+#ifdef PUPPYPRINT
+        puppyprint_print_deferred();
+#endif
         if (gViewportClip != NULL) {
             clear_viewport(gViewportClip, gWarpTransFBSetColor);
         } else {
@@ -496,11 +487,10 @@ void render_game(void) {
 
     gViewportOverride = NULL;
     gViewportClip     = NULL;
-    
-    profiler_update(PROFILER_TIME_GFX);
-    profiler_print_times();
 
-#if PUPPYPRINT_DEBUG
+    profiler_update(PROFILER_TIME_GFX, profiler_get_delta(PROFILER_DELTA_COLLISION) - first);
+    profiler_print_times();
+#ifdef PUPPYPRINT_DEBUG
     puppyprint_render_profiler();
 #endif
 }
