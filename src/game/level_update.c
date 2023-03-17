@@ -807,8 +807,7 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
 #else
                     sSourceWarpNodeId = WARP_NODE_DEATH;
 #endif                 
-                }
-                else{
+                } else {
                     //what the fuck is this bruhhhh
                     //fuck sm64 hp
                     //i have no idea if changing the 8 to a 5 will work, hope it does!
@@ -819,17 +818,19 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
 
                     if (resp_cond) {
                         //make mario respawn if he has over a third of his HP
-                            fadeMusic = FALSE;
-                            sSourceWarpNodeId = 0x0A;
-                            gMarioState->NewLevel = TRUE;
-                        } else {
+                        fadeMusic = FALSE;
+                        sSourceWarpNodeId = 0x0A;
+                        gMarioState->NewLevel = TRUE;
+                    } else {
                         //if he has under, then go gaga and die
-                            sSourceWarpNodeId = WARP_NODE_DEATH;
-                            gMarioState->InsideCourse = TRUE;
-                        }
-                    play_transition(WARP_TRANSITION_FADE_INTO_CIRCLE, 0x14, 0x00, 0x00, 0x00);
-                    sDelayedWarpTimer = 20;
+                        sSourceWarpNodeId = WARP_NODE_DEATH;
+                        gMarioState->InsideCourse = TRUE;
+                    }
                 }
+
+                play_transition(WARP_TRANSITION_FADE_INTO_CIRCLE, 0x14, 0x00, 0x00, 0x00);
+                sDelayedWarpTimer = 20;
+
                 break;
 
             case WARP_OP_LOOK_UP: // enter totwc
