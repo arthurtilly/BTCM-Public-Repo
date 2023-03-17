@@ -150,32 +150,21 @@ Gfx *geo_switch_anim_state(s32 callContext, struct GraphNode *node, UNUSED void 
 }
 
 Gfx *geo_switch_area(s32 callContext, struct GraphNode *node, UNUSED void *context) {
-    struct Surface *floor;
     struct GraphNodeSwitchCase *switchCase = (struct GraphNodeSwitchCase *) node;
+    RoomData room;
 
-    if (callContext == GEO_CONTEXT_RENDER) {
-        if (gMarioObject == NULL) {
-            switchCase->selectedCase = 0;
-        } else {
-            s16 roomCase;
-            if (revent_active) {
-                gMarioCurrentRoom = revent_room;
-                roomCase = revent_room - 1;
+    if (callContext == GEO_CONTEXT_RENDER && gMarioObject != NULL) {
+        room = get_room_at_pos(
+            gMarioObject->oPosX,
+            gMarioObject->oPosY,
+            gMarioObject->oPosZ
+        );
 
-                if (roomCase >= 0) {
-                    switchCase->selectedCase = roomCase;
-                }
-            } else {
-                floor = gMarioState->floor;
-                if (floor) {
-                    gMarioCurrentRoom = 0;
-                    roomCase = -1;
+        gMarioCurrentRoom = room;
+        print_debug_top_down_objectinfo("areainfo %d", room);
 
-                    if (roomCase >= 0) {
-                        switchCase->selectedCase = roomCase;
-                    }
-                }
-            }
+        if (room > 0) {
+            switchCase->selectedCase = (room - 1);
         }
     } else {
         switchCase->selectedCase = 0;
@@ -1959,30 +1948,31 @@ s32 is_item_in_array(s8 item, s8 *array) {
 //     o->oRoom = get_room_at_pos(o->oPosX, o->oPosY, o->oPosZ);
 // }
 
-// s32 is_mario_in_room(void) {
+// s32 cur_obj_is_mario_in_room(void) {
 //     if (o->oRoom != -1 && gMarioCurrentRoom != 0) {
-//         if (
-//             gMarioCurrentRoom == o->oRoom ||
-//             gDoorAdjacentRooms[gMarioCurrentRoom][0] == o->oRoom ||
-//             gDoorAdjacentRooms[gMarioCurrentRoom][1] == o->oRoom
+//         if (gMarioCurrentRoom == o->oRoom // Object is in Mario's room.
+//             || gDoorAdjacentRooms[gMarioCurrentRoom].forwardRoom  == o->oRoom // Object is in the transition room's forward  room.
+//             || gDoorAdjacentRooms[gMarioCurrentRoom].backwardRoom == o->oRoom // Object is in the transition room's backward room.
 //         ) {
 //             return MARIO_INSIDE_ROOM;
 //         }
+
 //         return MARIO_OUTSIDE_ROOM;
 //     }
+
 //     return MARIO_ROOM_UNDEFINED;
 // }
 
-// void cur_obj_enable_disable_room_rendering(s32 inRoom) {
-//     if (inRoom == MARIO_INSIDE_ROOM) {
-//         cur_obj_enable_rendering();
-//         o->activeFlags &= ~ACTIVE_FLAG_IN_DIFFERENT_ROOM;
-//         gNumRoomedObjectsInMarioRoom++;
-//     } else if (inRoom == MARIO_OUTSIDE_ROOM) {
-//         cur_obj_disable_rendering();
-//         o->activeFlags |= ACTIVE_FLAG_IN_DIFFERENT_ROOM;
-//         gNumRoomedObjectsNotInMarioRoom++;
-//     }
+// void cur_obj_enable_rendering_in_room(void) {
+//     cur_obj_enable_rendering();
+//     o->activeFlags &= ~ACTIVE_FLAG_IN_DIFFERENT_ROOM;
+//     gNumRoomedObjectsInMarioRoom++;
+// }
+
+// void cur_obj_disable_rendering_in_room(void) {
+//     cur_obj_disable_rendering();
+//     o->activeFlags |= ACTIVE_FLAG_IN_DIFFERENT_ROOM;
+//     gNumRoomedObjectsNotInMarioRoom++;
 // }
 
 s32 cur_obj_set_hitbox_and_die_if_attacked(struct ObjectHitbox *hitbox, s32 deathSound, s32 noLootCoins) {
