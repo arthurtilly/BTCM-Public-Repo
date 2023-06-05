@@ -19,6 +19,12 @@
 
 extern u8 global_audio_hit;
 
+enum ChannelIndexes {
+    SYNTH_CHANNEL_LEFT,
+    SYNTH_CHANNEL_RIGHT,
+    SYNTH_CHANNEL_STEREO_COUNT,
+};
+
 #ifdef BETTER_REVERB
 
 #define REVERB_WINDOW_SIZE_MAX 0x2000
@@ -58,8 +64,7 @@ extern s32 reverbFilterCount;
 extern s32 betterReverbWindowsSize;
 extern s32 betterReverbRevIndex;
 extern s32 betterReverbGainIndex;
-extern s32 *gReverbMultsL;
-extern s32 *gReverbMultsR;
+extern u8 *gReverbMults[SYNTH_CHANNEL_STEREO_COUNT];
 
 
 /* ------------ BETTER REVERB EXTERNED FUNCTIONS ------------ */
