@@ -1980,14 +1980,14 @@ void change_dialog_camera_angle(void) {
 }
 
 void shade_screen(void) {
+    Gfx* dlHead = gDisplayListHead;
 
-    // This is a bit weird. It reuses the dialog text box (width 130, height -80),
-    // so scale to at least fit the screen.
-    create_dl_translation_matrix(MENU_MTX_PUSH, -100.0f, SCREEN_HEIGHT, 0);
-    create_dl_scale_matrix(MENU_MTX_NOPUSH, 3.6f, 3.4f, 1.0f);
-    gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, 110);
-    gSPDisplayList(gDisplayListHead++, dl_draw_text_bg_box);
-    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+    gSPDisplayList(dlHead++, dl_shade_screen_begin);
+    gDPFillRectangle(dlHead++, GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(0), gBorderHeight,
+        (GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(0) - 1), ((SCREEN_HEIGHT - gBorderHeight) - 1));
+    gSPDisplayList(dlHead++, dl_shade_screen_end);
+
+    gDisplayListHead = dlHead;
 }
 
 void print_animated_red_coin(s16 x, s16 y) {
