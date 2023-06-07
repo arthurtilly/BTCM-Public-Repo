@@ -626,7 +626,7 @@ UNUSED static u16 unused_get_elapsed_time(u64 *cycleCounts, s32 index) {
  */
 void clear_dynamic_surface_references(void) {
     for (s32 i = 0; i < OBJECT_POOL_CAPACITY; i++) {
-        if (gObjectPool[i].oFloor && gObjectPool[i].oFloor->flags & SURFACE_FLAG_DYNAMIC) {
+        if (gObjectPool[i].oFloor && gObjectPool[i].oFloor->object != NULL) {
             gObjectPool[i].oFloor = NULL;
         }
     }
