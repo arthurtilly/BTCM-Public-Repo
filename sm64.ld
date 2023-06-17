@@ -167,7 +167,7 @@ SECTIONS
       BUILD_DIR/src/usb*.o(.text*);
       BUILD_DIR/src/audio*.o(.text*);
 #ifdef S2DEX_TEXT_ENGINE
-      lib/libs2d_engine.a:*(.text*);
+      BUILD_DIR/src/s2d_engine*.o(.text*);
 #endif
       */ULTRALIB.a:*.o(.text*);
       */libnustd.a:*.o(.text*);
@@ -191,7 +191,7 @@ SECTIONS
       BUILD_DIR/src/boot*.o(.*data*);
       BUILD_DIR/src/audio*.o(.*data*);
 #ifdef S2DEX_TEXT_ENGINE
-      lib/libs2d_engine.a:*(.*data*);
+      BUILD_DIR/src/s2d_engine*.o(.*data*);
 #endif
       */ULTRALIB.a:*.o(.data*);
       */libhvqm2.a:*.o(.data*);
@@ -209,7 +209,7 @@ SECTIONS
       BUILD_DIR/src/usb*.o(.rodata*);
       BUILD_DIR/src/audio*.o(.rodata*);
 #ifdef S2DEX_TEXT_ENGINE
-      lib/libs2d_engine.a:*(.rodata*);
+      BUILD_DIR/src/s2d_engine*.o(.rodata*);
 #endif
       */ULTRALIB.a:*.o(.rodata*);
       */libgcc.a:*.o(.rodata*);
@@ -228,7 +228,7 @@ SECTIONS
       BUILD_DIR/src/usb*.o(.*bss*);
       BUILD_DIR/src/audio*.o(.*bss*);
 #ifdef S2DEX_TEXT_ENGINE
-      lib/libs2d_engine.a:*(.*bss*);
+      BUILD_DIR/src/s2d_engine*.o(.*bss*);
 #endif
       */ULTRALIB.a:*.o(COMMON);
       */ULTRALIB.a:*.o(.scommon);
