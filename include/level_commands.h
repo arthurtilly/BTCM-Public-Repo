@@ -73,8 +73,9 @@ enum LevelCommands {
     /*0x3E*/ LEVEL_CMD_CHANGE_AREA_SKYBOX,
     /*0x3F*/ LEVEL_CMD_PUPPYLIGHT_ENVIRONMENT,
     /*0x40*/ LEVEL_CMD_PUPPYLIGHT_NODE,
-    /*0x41*/ LEVEL_CMD_FILESELECT_CONDITION,
-    /*0x44*/ LEVEL_CMD_LOAD_CMM,
+    /*0x41*/ LEVEL_CMD_SET_ECHO,
+    /*0x42*/ LEVEL_CMD_FILESELECT_CONDITION,
+    /*0x43*/ LEVEL_CMD_LOAD_CMM,
     /*0x44*/ LEVEL_CMD_LOAD_CMM_MODELS,
 };
 
@@ -445,6 +446,9 @@ enum WarpCheckpointFlags {
 
 #define STOP_MUSIC(fadeOutTime) \
     CMD_BBH(LEVEL_CMD_FADEOUT_MUSIC, 0x04, fadeOutTime)
+
+#define SET_ECHO(console, emulator) \
+    CMD_BBBB(LEVEL_CMD_SET_ECHO, 0x04, console, emulator)
 
 #define MACRO_OBJECTS(objList) \
     CMD_BBH(LEVEL_CMD_SET_MACRO_OBJECTS, 0x08, 0x0000), \

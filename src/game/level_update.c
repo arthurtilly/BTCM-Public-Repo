@@ -185,6 +185,16 @@ u32 pressed_pause(void) {
         return FALSE;
     }
 
+#ifdef PUPPYPRINT_DEBUG
+#ifdef BETTER_REVERB
+    if (sPPDebugPage == PUPPYPRINT_PAGE_RAM || sPPDebugPage == PUPPYPRINT_PAGE_LEVEL_SELECT || sPPDebugPage == PUPPYPRINT_PAGE_BETTER_REVERB) {
+#else
+    if (sPPDebugPage == PUPPYPRINT_PAGE_RAM || sPPDebugPage == PUPPYPRINT_PAGE_LEVEL_SELECT) {
+#endif
+        return FALSE;
+    }
+#endif
+
     if (!intangible && !dialogActive && !gWarpTransition.isActive && sDelayedWarpOp == WARP_OP_NONE
         && (gPlayer1Controller->buttonPressed & START_BUTTON)) {
         return TRUE;
@@ -412,7 +422,7 @@ void init_mario_after_warp(void) {
 
     if (gCurrDemoInput == NULL) {
 #ifdef BETTER_REVERB
-        gBetterReverbPreset = gCurrentArea->betterReverbPreset;
+        gBetterReverbPresetValue = gCurrentArea->betterReverbPreset;
 #endif
         set_background_music(gCurrentArea->musicParam, gCurrentArea->musicParam2, 0);
 
@@ -524,7 +534,7 @@ void warp_level(void) {
 
 //     if (gCurrCreditsEntry == NULL || gCurrCreditsEntry == sCreditsSequence) {
 // #ifdef BETTER_REVERB
-//         gBetterReverbPreset = gCurrentArea->betterReverbPreset;
+//         gBetterReverbPresetValue = gCurrentArea->betterReverbPreset;
 // #endif
 //         set_background_music(gCurrentArea->musicParam, gCurrentArea->musicParam2, 0);
 //     }
@@ -1070,7 +1080,11 @@ s32 play_mode_normal(void) {
     check_instant_warp();
 
 #ifdef PUPPYPRINT_DEBUG
+#ifdef BETTER_REVERB
+    if (sPPDebugPage != PUPPYPRINT_PAGE_RAM && sPPDebugPage != PUPPYPRINT_PAGE_LEVEL_SELECT && sPPDebugPage != PUPPYPRINT_PAGE_BETTER_REVERB) {
+#else
     if (sPPDebugPage != PUPPYPRINT_PAGE_RAM && sPPDebugPage != PUPPYPRINT_PAGE_LEVEL_SELECT) {
+#endif
         if (sTimerRunning && gHudDisplay.timer < 17999) {
             gHudDisplay.timer++;
         }
@@ -1088,7 +1102,11 @@ s32 play_mode_normal(void) {
 #endif
     if (gCurrentArea != NULL) {
 #ifdef PUPPYPRINT_DEBUG
-        if (sPPDebugPage != PUPPYPRINT_PAGE_RAM && sPPDebugPage != PUPPYPRINT_PAGE_LEVEL_SELECT) {
+#ifdef BETTER_REVERB
+    if (sPPDebugPage != PUPPYPRINT_PAGE_RAM && sPPDebugPage != PUPPYPRINT_PAGE_LEVEL_SELECT && sPPDebugPage != PUPPYPRINT_PAGE_BETTER_REVERB) {
+#else
+    if (sPPDebugPage != PUPPYPRINT_PAGE_RAM && sPPDebugPage != PUPPYPRINT_PAGE_LEVEL_SELECT) {
+#endif
             update_camera(gCurrentArea->camera);
         }
 #else
@@ -1420,7 +1438,7 @@ s32 init_level(void) {//
 
         if (gCurrDemoInput == NULL) {
 #ifdef BETTER_REVERB
-            gBetterReverbPreset = gCurrentArea->betterReverbPreset;
+            gBetterReverbPresetValue = gCurrentArea->betterReverbPreset;
 #endif
             set_background_music(gCurrentArea->musicParam, gCurrentArea->musicParam2, 0);
         }
