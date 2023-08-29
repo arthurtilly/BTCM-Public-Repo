@@ -2369,7 +2369,7 @@ void load_level(void) {
     //reset toolbar
     bcopy(&cmm_toolbar_defaults,&cmm_toolbar,sizeof(cmm_toolbar_defaults));
 
-    load_segment_decompress_skybox(0xA,cmm_skybox_table[cmm_lopt_bg*2],cmm_skybox_table[cmm_lopt_bg*2+1]);
+    load_segment_decompress(SEGMENT_SKYBOX,cmm_skybox_table[cmm_lopt_bg*2],cmm_skybox_table[cmm_lopt_bg*2+1]);
 
     u32 oldIndex = 0;
     cmm_tile_data_indices[0] = 0;
@@ -2443,7 +2443,7 @@ void sb_init(void) {
     struct Object *spawn_obj;
 
     cmm_toolbar_index = 0;
-    load_segment_decompress_skybox(0xA,cmm_skybox_table[cmm_lopt_bg*2],cmm_skybox_table[cmm_lopt_bg*2+1]);
+    load_segment_decompress(SEGMENT_SKYBOX,cmm_skybox_table[cmm_lopt_bg*2],cmm_skybox_table[cmm_lopt_bg*2+1]);
 
     switch(cmm_mode) {
         case CMM_MODE_MAKE:
@@ -2604,7 +2604,7 @@ void reload_theme(void) {
 }
 
 void reload_bg(void) {
-    load_segment_decompress_skybox(0xA,cmm_skybox_table[cmm_lopt_bg*2],cmm_skybox_table[cmm_lopt_bg*2+1]);
+    load_segment_decompress(SEGMENT_SKYBOX,cmm_skybox_table[cmm_lopt_bg*2],cmm_skybox_table[cmm_lopt_bg*2+1]);
 }
 
 u8 cmm_upsidedown_tile = FALSE;
