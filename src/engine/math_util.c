@@ -787,14 +787,8 @@ void mtxf_shadow(Mat4 dest, Vec3f upDir, Vec3f pos, Vec3f scale, s16 yaw) {
     MTXF_END(dest);
 }
 
-f32 lerp(f32 a, f32 b, f32 f)
-{
+f32 lerp(f32 a, f32 b, f32 f) {
     return (a * (1.0 - f)) + (b * f);
-}
-
-f32 smoothstep(f32 edge0, f32 edge1, f32 x) {
-   x = (x - edge0) / (edge1 - edge0);
-   return x * x * (3.0f - 2.0f * x);
 }
 
 /**
