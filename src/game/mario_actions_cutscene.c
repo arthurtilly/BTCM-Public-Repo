@@ -37,7 +37,7 @@
 // static struct Object *sEndJumboStarObj;
 // static s16 sEndPeachAnimation;
 // static s16 sEndToadAnims[2];
-// ModelID32 gStarModelLastCollected = MODEL_STAR;
+ModelID32 gStarModelLastCollected = MODEL_STAR;
 
 // Vp sEndCutsceneVp = {
 //     {
