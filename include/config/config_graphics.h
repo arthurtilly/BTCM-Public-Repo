@@ -20,12 +20,12 @@
 /**
  * Show a watermark on the title screen that reads "Made with HackerSM64", instead of the copyright message.
  */
-#define INTRO_CREDIT
+// #define INTRO_CREDIT
 
 /**
  * Spawns floombas on the title screen.
  */
-#define INTRO_FLOOMBAS
+// #define INTRO_FLOOMBAS
 
 /**
  * Enables widescreen (16:9) support.
@@ -143,7 +143,7 @@
 /**
  * Eases the textured screen transitions to make them look smoother.
  */
-#define EASE_IN_OUT_TRANSITIONS
+// #define EASE_IN_OUT_TRANSITIONS
 
 /**
  * Uses frustratio of 2 instead of 1.
