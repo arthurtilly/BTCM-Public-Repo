@@ -2724,11 +2724,7 @@ void init_mario_from_save_file(void) {
     gMarioState->marioBodyState = &gBodyStates[0];
     gMarioState->controller = &gControllers[0];
     gMarioState->animList = &gMarioAnimsBuf;
-    if (gIsConsole && __osControllerTypes[1] == CONT_TYPE_GCN) {
-        gMarioState->controller = &gControllers[1];
-    } else {
-        gMarioState->controller = &gControllers[0];
-    }
+    gMarioState->controller = &gControllers[0];
 
     gMarioState->numCoins = 0;
     gMarioState->lastStarCollected = 0;
