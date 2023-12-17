@@ -2290,12 +2290,12 @@ s16 update_default_camera(struct Camera *c) {
     }
 
     // Make Lakitu fly above the gas
-    gasHeight = find_poison_gas_level(cPos[0], cPos[2]);
-    if (gasHeight != FLOOR_LOWER_LIMIT) {
-        if ((gasHeight += 130.f) > c->pos[1]) {
-            c->pos[1] = gasHeight;
-        }
-    }
+    // gasHeight = find_poison_gas_level(cPos[0], cPos[2]);
+    // if (gasHeight != FLOOR_LOWER_LIMIT) {
+    //     if ((gasHeight += 130.f) > c->pos[1]) {
+    //         c->pos[1] = gasHeight;
+    //     }
+    // }
 
     if (sMarioCamState->action & ACT_FLAG_HANGING || sMarioCamState->action == ACT_RIDING_HOOT) {
         camFloorHeight = sMarioCamState->pos[1] + 400.f;
@@ -3125,11 +3125,7 @@ void update_camera(struct Camera *c) {
                     break;
 
                 case CAMERA_MODE_8_DIRECTIONS:
-                    if (gMarioState->_2D) {
-                        cutscene_2D(c);
-                    } else {
-                        mode_8_directions_camera(c);
-                    }
+                    mode_8_directions_camera(c);
                     break;
 
                 case CAMERA_MODE_RADIAL:
@@ -8403,13 +8399,13 @@ void cutscene_suffocation_fly_away(UNUSED struct Camera *c) {
  */
 void cutscene_suffocation_stay_above_gas(struct Camera *c) {
     cutscene_goto_cvar_pos(c, 400.f, 0x2800, 0x200, 0);
-    f32 gasLevel = find_poison_gas_level(sMarioCamState->pos[0], sMarioCamState->pos[2]);
+    // f32 gasLevel = find_poison_gas_level(sMarioCamState->pos[0], sMarioCamState->pos[2]);
 
-    if (gasLevel != FLOOR_LOWER_LIMIT) {
-        if ((gasLevel += 130.f) > c->pos[1]) {
-            c->pos[1] = gasLevel;
-        }
-    }
+    // if (gasLevel != FLOOR_LOWER_LIMIT) {
+    //     if ((gasLevel += 130.f) > c->pos[1]) {
+    //         c->pos[1] = gasLevel;
+    //     }
+    // }
 }
 
 /**

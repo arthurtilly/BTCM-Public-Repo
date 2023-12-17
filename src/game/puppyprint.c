@@ -506,19 +506,19 @@ void print_basic_profiling(void) {
     u32 cpuTime = profiler_get_cpu_microseconds();
     u32 rspTime = profiler_get_rsp_microseconds();
     u32 rdpTime = profiler_get_rdp_microseconds();
-    print_fps(16, 40);
+    print_fps(16, 10);
     sprintf(textBytes, "CPU: %dus (%d%%)\nRSP: %dus (%d%%)\nRDP: %dus (%d%%)",
             cpuTime, (cpuTime / 333),
             rspTime, (rspTime / 333),
             rdpTime, (rdpTime / 333));
-    print_small_text_light(16, 28, textBytes, PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_OUTLINE);
+    print_small_text_light(16, 22, textBytes, PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_OUTLINE);
 
-    sprintf(textBytes, "Tiles: %d / %d#GFX: %d / %d#VTX: %d / %d#Objects: %d / %d",
+    sprintf(textBytes, "Tiles: %d / %d\nGFX: %d / %d\nVTX: %d / %d\nObjects: %d / %d",
             cmm_tile_count, CMM_TILE_POOL_SIZE,
             cmm_gfx_total, CMM_GFX_SIZE,
             cmm_vtx_total, CMM_VTX_SIZE,
             cmm_object_limit_count, CMM_MAX_OBJS);
-    print_small_text(16, 70, textBytes, PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_OUTLINE);
+    print_small_text(16, 80, textBytes, PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_OUTLINE);
 }
 
 void puppyprint_render_standard(void) {
@@ -810,7 +810,7 @@ void puppyprint_profiler_process(void) {
             if (gCurrLevelNum > 3) {
                 sLevelSelectOption = gCurrLevelNum;
             } else {
-                sLevelSelectOption = LEVEL_CASTLE_GROUNDS;
+                sLevelSelectOption = LEVEL_BOB;
             }
         }
         // Collision toggles.

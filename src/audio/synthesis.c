@@ -410,6 +410,7 @@ void synthesis_load_note_subs_eu(s32 updateIndex) {
         }
     }
 }
+#endif
 
 #ifdef VERSION_EU
 // TODO: (Scrub C) pointless mask and whitespace
