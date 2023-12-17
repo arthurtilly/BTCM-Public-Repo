@@ -2428,10 +2428,7 @@ void load_level(void) {
 
 void cmm_init() {
     load_level();
-    if (cmm_level_action == CMM_LA_PLAY_LEVELS) {
-        generate_terrain_gfx();
-        generate_terrain_collision();
-    } else {
+    if (cmm_level_action != CMM_LA_PLAY_LEVELS) {
         vec3_set(cmm_cursor_pos, 32, 0, 32);
         cmm_camera_foc[0] = GRID_TO_POS(32);
         cmm_camera_foc[1] = 0.0f;
@@ -2444,12 +2441,12 @@ void sb_init(void) {
 
     cmm_toolbar_index = 0;
     load_segment_decompress(SEGMENT_SKYBOX,cmm_skybox_table[cmm_lopt_bg*2],cmm_skybox_table[cmm_lopt_bg*2+1]);
+    generate_terrain_gfx();
 
     switch(cmm_mode) {
         case CMM_MODE_MAKE:
             cmm_menu_state = CMM_MAKE_MAIN;
             o->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
-            generate_terrain_gfx();
             generate_object_preview();
 
             //init visual tile bounds
