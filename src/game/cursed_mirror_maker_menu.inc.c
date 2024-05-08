@@ -1250,11 +1250,8 @@ struct cmm_credits_entry {
 
 struct cmm_credits_entry cmm_credits[] = {
     {"Mario Builder 64",1},
-    {"By Rovertronic",0},
+    {"By Rovertronic & Arthurtilly",0},
     {"2024",0},
-    {"",0},
-    {"Tile Systems, Code Refactor, Textures",1},
-    {"Arthurtilly",0},
     {"",0},
     {"HackerSM64",1},
     {"HackerN64 Team",0},
